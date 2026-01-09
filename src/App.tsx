@@ -1,14 +1,13 @@
 import React, { useMemo } from "react";
 import { Line } from "@ant-design/plots";
 import { Col, Row, Form, Select } from "antd";
-const { Option } = Select;
 
 import { getData, filterData } from "./utils";
 import type { DateFormat, RangeFilterType } from "./utils";
-
 import { createChartConfig, discretenessOptions, rangeOptions } from "./helpers/chartOptions";
-
 import mocs from "./data/mocs.json";
+
+const { Option } = Select;
 
 type FormType = {
   range: RangeFilterType;
@@ -27,7 +26,6 @@ function App() {
 
   const modData = useMemo(() => getData(mocs.ethereum.transactions, discreteness), [discreteness]);
   const filteredData = useMemo(() => filterData(modData, range), [modData, range]);
-
   const config = createChartConfig(filteredData);
 
   return (
