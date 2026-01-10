@@ -1,5 +1,5 @@
 import moment from "moment";
-import _ from "lodash";
+import groupBy from "lodash/groupBy";
 
 export type InDataType = {
   time: string;
@@ -34,7 +34,7 @@ const prepareData = (data: InDataType, dateFormat: DateFormat) =>
 
 // group data by date
 const groupData = (data: ReturnType<typeof prepareData>) =>
-  _.groupBy(data, (d) => {
+  groupBy(data, (d) => {
     return d._date;
   });
 
@@ -42,13 +42,13 @@ const groupData = (data: ReturnType<typeof prepareData>) =>
 const buildData = (data: ReturnType<typeof groupData>): ModDataType => {
   let result: ModDataType = [];
 
-  _.forEach(data, (val, key) => {
+  for (const [key, val] of Object.entries(data)) {
     let totalCounts = val.reduce((acc, curr) => {
       return acc + curr.price;
     }, 0);
 
     result.push({ date: key, price: totalCounts / val.length });
-  });
+  }
 
   return result;
 };
